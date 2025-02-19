@@ -1,0 +1,31 @@
+<form id="myForm">
+    <input type="text" name="name" placeholder="Name" required>
+    <input type="email" name="email" placeholder="Email" required>
+    <textarea name="message" placeholder="Message" required></textarea>
+    <button type="submit">Submit</button>
+  </form>
+  
+  <script>
+    document.getElementById('myForm').addEventListener('submit', function (e) {
+      e.preventDefault(); // Prevent the default form submission
+      
+      // Create a FormData object
+      var formData = new FormData(e.target);
+      
+      // Convert FormData to JSON
+      var jsonData = {};
+      formData.forEach((value, key) => {
+        jsonData[key] = value;
+      });
+      
+      // Send the data to your Google Apps Script
+      fetch('https://script.google.com/macros/s/AKfycbzYcacVPDQ1sCHHu-8F7PHmOXacYqfWa3tGWlb7srSq64vNisudyRtV2EE2Pw-G6W63/exec', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(jsonData),
+      })
+        .then(response => response.text())
+        .then(data => alert('Form submitted successfully!'))
+        .catch(error => alert('Error submitting form.'));
+    });
+  </script>
